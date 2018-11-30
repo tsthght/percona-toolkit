@@ -5495,7 +5495,11 @@ sub get_master_status {
 
 sub wait_for_master {
    my ( $self, %args ) = @_;
-   my @required_args = qw(master_status slave_dbh);
+   # PT-1630 https://jira.percona.com/browse/PT-1630
+   # $master_status is not mandatory because for example in Galera, it is not mandatory that
+   # the binlog is ON.
+   #my @required_args = qw(master_status slave_dbh);
+   my @required_args = qw(slave_dbh);
    foreach my $arg ( @required_args ) {
       die "I need a $arg argument" unless $args{$arg};
    }
