@@ -2663,9 +2663,13 @@ sub any_unix_timestamp {
       $val .= ' 00:00:00' unless $hms;
       return unix_timestamp(parse_timestamp($val));
    }
-   elsif ( ($ymd, $hms) = $val =~ m/^(\d{4}-\d\d-\d\d)(?:[T ](\d+:\d+:\d+))?/) {
+   elsif ( ($ymd, $hms) = $val =~ m/^(\d{4}-\d\d-\d\d)(?:[T \-](\d+:\d+:\d+))?/) {
       PTDEBUG && _d('ts is properly formatted timestamp');
-      $val .= ' 00:00:00' unless $hms;
+	  if ($hms) {
+          $val = "$ymd $hms";
+	  } else {
+          $val .= ' 00:00:00';
+	  }
       return unix_timestamp($val);
    }
    else {
